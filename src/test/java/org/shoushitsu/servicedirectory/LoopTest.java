@@ -24,12 +24,12 @@ class LoopTest {
 
 		@Override
 		public int a() {
-			return b() + 1;
+			return env().b() + 1;
 		}
 
 		@Override
 		public int b() {
-			return a() + 1;
+			return env().a() + 1;
 		}
 		
 	}
