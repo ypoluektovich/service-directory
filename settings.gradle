@@ -1,4 +1,4 @@
 rootProject.name = 'service-directory'
 
+include 'env-tester'
 include 'stress-tests'
-
