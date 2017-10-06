@@ -80,7 +80,21 @@ Mozilla Public License 2.0, see `LICENSE.txt`.
 
 ## Distribution?
 
-TBD, but this will be available on Bintray.
+JAR files are available on Bintray: [https://bintray.com/ypoluektovich/shoushitsu/service-directory]()
+
+Setting up in Gradle:
+
+```groovy
+repositories {
+    maven { url 'https://dl.bintray.com/ypoluektovich/shoushitsu/' }
+}
+
+dependencies {
+    compile 'org.shoushitsu.service-directory:service-directory:1.+'
+}
+```
+
+Versions are [semantic](http://semver.org/).
 
 ## Contribution?
 
