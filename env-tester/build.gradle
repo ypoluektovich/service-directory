@@ -10,8 +10,8 @@ buildscript {
 plugins {
     id 'java'
     id 'maven-publish'
-    id 'com.jfrog.bintray' version '1.7.3'
 }
+apply plugin: 'com.jfrog.bintray'
 apply plugin: 'org.junit.platform.gradle.plugin'
 
 group 'org.shoushitsu.service-directory'
@@ -60,8 +60,8 @@ bintray {
     publish = false
     pkg {
         repo = 'shoushitsu'
-        name = 'service-directory'
-        desc = 'A lightweight library for service initialization god objects'
+        name = 'service-directory-env-tester'
+        desc = 'A method to test service-directory environments'
         websiteUrl = 'https://github.com/ypoluektovich/service-directory'
         issueTrackerUrl = 'https://github.com/ypoluektovich/service-directory/issues'
         vcsUrl = 'https://github.com/ypoluektovich/service-directory.git'
