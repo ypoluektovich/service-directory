@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M4'
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.+'
     }
 }
 
@@ -24,8 +24,8 @@ dependencies {
     compile rootProject
 
     compile "org.mockito:mockito-core:2.+"
-    compile "org.opentest4j:opentest4j:1.0.0-M2"
+    compile "org.opentest4j:opentest4j:1.+"
 
-    testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0-M4")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.0-M4")
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.+")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.+")
 }

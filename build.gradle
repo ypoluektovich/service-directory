@@ -3,15 +3,21 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0-M4'
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.+'
     }
 }
 
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'com.jfrog.bintray' version '1.7.3'
+}
+
+apply plugin: 'org.junit.platform.gradle.plugin'
+
 group 'org.shoushitsu.service-directory'
 version '1.0.0'
-
-apply plugin: 'java'
-apply plugin: 'org.junit.platform.gradle.plugin'
+ext.pkgname = 'service-directory'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -21,8 +27,47 @@ repositories {
 }
 
 dependencies {
-    testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0-M4")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.0-M4")
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.+")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.+")
 
     testCompile "org.mockito:mockito-core:2.+"
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+}
+
+publishing {
+    publications {
+        main(MavenPublication) {
+            from components.java
+            artifactId pkgname
+
+            artifact sourceJar {
+                classifier "sources"
+            }
+        }
+    }
+}
+
+bintray {
+    user = bintrayUser
+    key = bintrayKey
+    publications = ['main']
+    dryRun = false
+    publish = false
+    pkg {
+        repo = 'shoushitsu'
+        name = 'service-directory'
+        desc = 'A lightweight library for service initialization god objects'
+        websiteUrl = 'https://github.com/ypoluektovich/service-directory'
+        issueTrackerUrl = 'https://github.com/ypoluektovich/service-directory/issues'
+        vcsUrl = 'https://github.com/ypoluektovich/service-directory.git'
+        licenses = ['MPL-2.0']
+        publicDownloadNumbers = true
+        version {
+            name = project.version
+            vcsTag = 'v' + project.version
+        }
+    }
 }
