@@ -1,22 +1,11 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.+'
-    }
-}
-
 plugins {
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
-    id 'com.jfrog.bintray' version '1.7.3'
+    id 'com.jfrog.bintray' version '1.8.5'
 }
-
-apply plugin: 'org.junit.platform.gradle.plugin'
 
 group 'org.shoushitsu.service-directory'
-version '1.0.0'
+version '2.0.0'
 ext.pkgname = 'service-directory'
 
 sourceCompatibility = 1.8
@@ -27,10 +16,14 @@ repositories {
 }
 
 dependencies {
-    testCompile("org.junit.jupiter:junit-jupiter-api:5.+")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.+")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.+")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.+")
 
-    testCompile "org.mockito:mockito-core:2.+"
+    testImplementation "org.mockito:mockito-core:3.+"
+}
+
+test {
+    useJUnitPlatform()
 }
 
 task sourceJar(type: Jar) {
