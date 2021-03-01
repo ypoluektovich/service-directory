@@ -1,36 +1,37 @@
 plugins {
     id 'java-library'
+    id 'signing'
     id 'maven-publish'
 }
-apply plugin: 'com.jfrog.bintray'
 
 group 'org.shoushitsu.service-directory'
 version '2.0.0'
 ext.pkgname = 'env-tester'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    withSourcesJar()
+    withJavadocJar()
+}
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
     api rootProject
 
-    api "org.mockito:mockito-core:3.+"
-    api "org.opentest4j:opentest4j:1.+"
+    api "org.mockito:mockito-core:[3,4)"
+    api "org.opentest4j:opentest4j:[1,2)"
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.+")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.+")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:[5,6)")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:[5,6)")
 }
 
 test {
     useJUnitPlatform()
-}
-
-task sourceJar(type: Jar) {
-    from sourceSets.main.allSource
 }
 
 publishing {
@@ -39,31 +40,50 @@ publishing {
             from components.java
             artifactId pkgname
 
-            artifact sourceJar {
-                classifier "sources"
+            pom {
+                name = 'Service Directory environment tester'
+                description = 'A helper library to test your service-directory environment definitions'
+                url = 'https://github.com/ypoluektovich/service-directory'
+
+                licenses {
+                    license {
+                        name = 'Mozilla Public License Version 2.0'
+                        url = 'https://www.mozilla.org/en-US/MPL/2.0/'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'ypoluektovich'
+                        name = 'Yanus Poluektovich'
+                        email = 'ypoluektovich@gmail.com'
+                        url = 'https://github.com/ypoluektovich'
+                    }
+                }
+
+                scm {
+                    connection = 'scm:git:https://github.com/ypoluektovich/service-directory.git'
+                    developerConnection = 'scm:git:https://github.com/ypoluektovich/service-directory.git'
+                    url = 'https://github.com/ypoluektovich/service-directory'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'OSSRH'
+            def releasesRepoUrl = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            def snapshotsRepoUrl = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            credentials {
+                username = ossrhUsername
+                password = ossrhPassword
             }
         }
     }
 }
 
-bintray {
-    user = bintrayUser
-    key = bintrayKey
-    publications = ['main']
-    dryRun = false
-    publish = false
-    pkg {
-        repo = 'shoushitsu'
-        name = 'service-directory-env-tester'
-        desc = 'A method to test service-directory environments'
-        websiteUrl = 'https://github.com/ypoluektovich/service-directory'
-        issueTrackerUrl = 'https://github.com/ypoluektovich/service-directory/issues'
-        vcsUrl = 'https://github.com/ypoluektovich/service-directory.git'
-        licenses = ['MPL-2.0']
-        publicDownloadNumbers = true
-        version {
-            name = project.version
-            vcsTag = 'v' + project.version
-        }
-    }
+signing {
+    useGpgCmd()
+    sign publishing.publications.main
 }
